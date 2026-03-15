@@ -1,11 +1,15 @@
+import { Megaphone } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
+import { AnnouncementBanner } from "./components/AnnouncementBanner";
+import { AnnouncementPanel } from "./components/AnnouncementPanel";
 import { ChessBoard } from "./components/ChessBoard";
 import { GameStatus } from "./components/GameStatus";
 import { ModeSelector } from "./components/ModeSelector";
 import { PromotionModal } from "./components/PromotionModal";
 import type { DifficultyLevel } from "./engine/chessAI";
 import { DIFFICULTY_LABELS } from "./engine/chessAI";
+import { useAnnouncements } from "./hooks/useAnnouncements";
 import { useChess } from "./hooks/useChess";
 import type { GameMode, PieceColor } from "./hooks/useChess";
 
@@ -27,7 +31,17 @@ export default function App() {
     newGame,
   } = useChess();
 
+  const {
+    announcements,
+    activeAnnouncements,
+    addAnnouncement,
+    updateAnnouncement,
+    removeAnnouncement,
+    toggleAnnouncement,
+  } = useAnnouncements();
+
   const [showModeSelector, setShowModeSelector] = useState(true);
+  const [showAnnouncementPanel, setShowAnnouncementPanel] = useState(false);
 
   const handleModeConfirm = (
     mode: GameMode,
@@ -52,7 +66,8 @@ export default function App() {
       }}
     >
       {/* Header */}
-      <header className="flex items-center justify-center pt-8 pb-4">
+      <header className="flex items-center justify-between pt-8 pb-4 px-6">
+        <div className="w-28" />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +84,36 @@ export default function App() {
             {modeLabelMap[gameMode]}
           </p>
         </motion.div>
+        <div className="w-28 flex justify-end">
+          <motion.button
+            data-ocid="announcements.open_modal_button"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            onClick={() => setShowAnnouncementPanel(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-90 active:scale-95"
+            style={{
+              background: "oklch(0.22 0.04 55)",
+              border: "1px solid oklch(0.35 0.06 55)",
+              color: "#c9a97a",
+            }}
+          >
+            <Megaphone size={13} />
+            Anuncios
+            {activeAnnouncements.length > 0 && (
+              <span
+                className="ml-0.5 flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold"
+                style={{ background: "oklch(0.55 0.14 30)", color: "white" }}
+              >
+                {activeAnnouncements.length}
+              </span>
+            )}
+          </motion.button>
+        </div>
       </header>
+
+      {/* Announcement banners */}
+      <AnnouncementBanner announcements={activeAnnouncements} />
 
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 pb-8">
@@ -154,6 +198,17 @@ export default function App() {
           currentDifficulty={difficulty}
         />
       )}
+
+      {/* Announcement panel */}
+      <AnnouncementPanel
+        open={showAnnouncementPanel}
+        onClose={() => setShowAnnouncementPanel(false)}
+        announcements={announcements}
+        onAdd={addAnnouncement}
+        onUpdate={updateAnnouncement}
+        onRemove={removeAnnouncement}
+        onToggle={toggleAnnouncement}
+      />
     </div>
   );
 }
