@@ -1,25 +1,38 @@
 # Chess Game
 
 ## Current State
-Aplicacion de ajedrez completa con modo PvP y PvC, 6 niveles de dificultad, IA con minimax, resaltado de movimientos validos, deteccion de jaque/jaque mate, y retraso de 3 segundos en movimientos de IA.
+The app has a full chess game with:
+- vs Player (PvP) mode and vs Computer (PvC) mode with 6 difficulty levels
+- ModeSelector modal shown at startup
+- AI using minimax algorithm with 3-second delay
+- Announcement panel system
+- The ModeSelector IS functional, the user may not have seen it properly
 
 ## Requested Changes (Diff)
 
 ### Add
-- Panel de administrador de anuncios accesible desde un boton en el header o footer
-- Formulario para crear anuncios con: titulo, mensaje, tipo (informacion / alerta / promocion), activo/inactivo
-- Lista de anuncios creados con opciones de editar, activar/desactivar y eliminar
-- Banner de anuncio visible en la app del juego cuando hay anuncios activos
-- Almacenamiento de anuncios en estado local (localStorage para persistencia)
+- "Chat WhatsAppeando" section at the bottom of the page, styled like WhatsApp
+- Camera panel: shows live camera preview using browser MediaDevices API
+- Audio: record and send voice notes using MediaRecorder API
+- Text message input and send button
+- Chat messages displayed in a scrollable bubble list (local only, stored in state)
+- Camera toggle button and audio recording button in the chat toolbar
+- Emoji support in messages (basic, via text input)
 
 ### Modify
-- Header o footer para incluir acceso al panel de anuncios
+- Ensure ModeSelector works correctly and shows vs Computer option and 6 difficulty levels clearly
+- Keep existing chess game fully functional above the chat section
 
 ### Remove
-- Nada
+- Nothing
 
 ## Implementation Plan
-1. Crear hook `useAnnouncements` que gestione anuncios en localStorage
-2. Crear componente `AnnouncementBanner` que muestra anuncios activos en el juego
-3. Crear componente `AnnouncementPanel` con formulario CRUD de anuncios
-4. Integrar banner y boton de acceso al panel en App.tsx
+1. Create `WhatsappChat.tsx` component with:
+   - WhatsApp-green header "Chat WhatsAppeando"
+   - Scrollable message list area with chat bubbles
+   - Camera toggle that shows live video stream preview
+   - Audio record button (hold to record or toggle)
+   - Text input + send button
+   - Messages stored in local React state with timestamps
+2. Add the component below the footer in App.tsx
+3. Keep ModeSelector intact

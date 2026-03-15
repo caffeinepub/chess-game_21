@@ -7,6 +7,7 @@ import { ChessBoard } from "./components/ChessBoard";
 import { GameStatus } from "./components/GameStatus";
 import { ModeSelector } from "./components/ModeSelector";
 import { PromotionModal } from "./components/PromotionModal";
+import { WhatsappChat } from "./components/WhatsappChat";
 import type { DifficultyLevel } from "./engine/chessAI";
 import { DIFFICULTY_LABELS } from "./engine/chessAI";
 import { useAnnouncements } from "./hooks/useAnnouncements";
@@ -164,6 +165,11 @@ export default function App() {
           </p>
         </motion.div>
       </main>
+
+      {/* WhatsApp Chat */}
+      <div className="px-4">
+        <WhatsappChat />
+      </div>
 
       {/* Footer */}
       <footer className="py-4 text-center">
